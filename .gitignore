@@ -1,106 +1,30 @@
-# === Logs ===
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-
-# === Diagnostic reports ===
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
-# === Runtime data ===
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-# === OS files ===
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-# Windows
-Thumbs.db
-ehthumbs.db
-
-# === IDE directories ===
-.vscode/
-.idea/
-
-# === Coverage & reports ===
-lib-cov/
-coverage/
-.nyc_output/
-
-# === Dependency directories ===
+# Ignore build and node modules
 node_modules/
-jspm_packages/
-web_modules/
-bower_components/
-
-# === Build outputs & caches ===
 build/
-declaration/
 dist/
-.next/
-.nuxt/
+
+# Ignore generated cache
 .cache/
 .parcel-cache/
-.rpt2_cache/
-.rts2_cache_*
-.temp/
-.docusaurus/
-.web_modules/
-serverless/
-.fusebox/
-
-# === Parcel & Snowpack ===
-.cache/
-.web_modules/
-
-# === TypeScript ===
 *.tsbuildinfo
-tsconfig.tsbuildinfo
 
-# === Environment files ===
-.env
-.env.*.local
-
-# === Electron packages ===
-electron-packages/
-*.AppImage
-*.deb
-*.snap
-
-# === Lockfiles ===
-package-lock.json
-yarn.lock
-.pnpm-lock.yaml
-
-# === Playground / maps ===
-*.js.map
-
-# === Babylon.js Editor specific ===
+# Ignore only generated binaries, keep sources
 projects/cache.json
 projects/files.json
 projects/links.json
+
+# Babylon Editor user workspace (optional)
 workspace.editorworkspace
-assets/materials/
-projects/scene/**/*.json
 
-# === Misc ===
-tmp/
-temp/
-.nvmrc
-
-
-# Generated Babylon-Editor scene files
+# Optionally ignore editor autosaves but keep main files
+# Ignore all .babylonbinarymeshdata, but allow your main scene
 projects/scene/geometries/*.babylonbinarymeshdata
 projects/scene/*.editorproject
-scenes/**/*.babylon
+# !scenes/scene/scene.babylon
 
-# BabylonJS Editor metadata and workspace configs
-assets/scene.scene
-editor.tsconfig.json
+# Keep your custom material files
+# (remove this if you're adding your own .material files)
+# assets/materials/
+
+# Optional: ignore lockfiles
+package-lock.json

@@ -1,34 +1,28 @@
-import { BabylonFileLoaderConfiguration, Engine, Scene } from "@babylonjs/core";
+import { BabylonFileLoaderConfiguration, Engine, Scene, Vector3 } from "@babylonjs/core";
 import "@babylonjs/materials";
+import { Player } from "./scenes/Player";
 
 import * as CANNON from "cannon";
 
 import { appendScene } from "./scenes/tools";
 
 export class Game {
-    /**
-     * Defines the engine used to draw the game using Babylon.JS and WebGL.
-     */
     public engine: Engine;
-    /**
-     * Defines the scene used to store and draw elements in the canvas.
-     */
     public scene: Scene;
 
-    /**
-     * Constructor.
-     */
+    // Define the respawn position (adjust as needed)
+    private readonly _respawnPosition = new Vector3(0, 5, -10);
+
     public constructor() {
         this.engine = new Engine(document.getElementById("renderCanvas") as HTMLCanvasElement, true);
         this.scene = new Scene(this.engine);
+        this.scene.enablePhysics(new Vector3(0, -9.81, 0), new CANNON.World());
+
 
         this._bindEvents();
         this._loadScene();
     }
 
-    /**
-     * Loads the first scene.
-     */
     private async _loadScene(): Promise<void> {
         const rootUrl = "./scenes/_assets/";
 
@@ -36,21 +30,31 @@ export class Game {
 
         await appendScene(this.scene, rootUrl, "../scene/scene.babylon");
 
-        // Attach camera.
+        // Create player
+        const player = new Player(this.scene);
+
         if (!this.scene.activeCamera) {
             throw new Error("No camera defined in the scene. Please add at least one camera in the project or create one yourself in the code.");
         }
 
-        this.scene.activeCamera.attachControl(this.engine.getRenderingCanvas(), false);
-
-        // Render.
-        this.engine.runRenderLoop(() => this.scene.render());
+        // Start rendering loop and add respawn check
+        this.engine.runRenderLoop(() => {
+            this.scene.render();
+            this._respawnCameraIfNeeded();
+        });
     }
 
-    /**
-     * Binds the required events for a full experience.
-     */
     private _bindEvents(): void {
         window.addEventListener("resize", () => this.engine.resize());
+    }
+
+    // 🔁 Respawn the camera if it falls below a threshold
+    private _respawnCameraIfNeeded(): void {
+        const cam = this.scene.activeCamera;
+        if (cam && cam.position.y < -10) {
+            console.log("[CloudVerse] Camera fell, respawning...");
+            cam.position.copyFrom(this._respawnPosition);
+            cam.setTarget(Vector3.Zero());
+        }
     }
 }

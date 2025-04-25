@@ -3,6 +3,7 @@ FROM node:18 AS builder
 WORKDIR /app
 COPY . .
 RUN npm install
+RUN npm install socket.io-client
 RUN npm run build
 RUN ls -la dist
 

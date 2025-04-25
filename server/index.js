@@ -15,6 +15,9 @@ const players = {};
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
+  // 🆕 Send the list of already connected players
+  socket.emit("all-players", players);
+
   socket.on("new-player", (playerData) => {
     players[socket.id] = playerData;
     socket.broadcast.emit("player-joined", { id: socket.id, ...playerData });
@@ -34,6 +37,7 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("player-left", { id: socket.id });
   });
 });
+
 
 server.listen(3001, () => {
   console.log("Socket.IO server running on port 3001");

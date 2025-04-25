@@ -1,6 +1,7 @@
 import { BabylonFileLoaderConfiguration, Engine, Scene, Vector3 } from "@babylonjs/core";
 import "@babylonjs/materials";
 import { Player } from "./scenes/Player";
+import { NetworkManager } from "./scenes/NetworkManager";
 
 import * as CANNON from "cannon";
 
@@ -32,6 +33,9 @@ export class Game {
 
         // Create player
         const player = new Player(this.scene);
+
+        // After player is created:
+        const network = new NetworkManager(this.scene, player.mesh);
 
         if (!this.scene.activeCamera) {
             throw new Error("No camera defined in the scene. Please add at least one camera in the project or create one yourself in the code.");

@@ -54,7 +54,9 @@ export class Game {
         if (cam && cam.position.y < -10) {
             console.log("[CloudVerse] Camera fell, respawning...");
             cam.position.copyFrom(this._respawnPosition);
-            cam.setTarget(Vector3.Zero());
+            if ("setTarget" in cam) {
+                (cam as any).setTarget(Vector3.Zero());
+            }
         }
     }
 }
